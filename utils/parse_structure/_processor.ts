@@ -1,7 +1,9 @@
+import { processorTypes } from "../../constants/processor_types.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
 export function parseProcessorStructure(bytes: number[]) {
   const socketDesignationStringIndex = bytes[4] - 1;
+  const numericProcessorType = bytes[5];
   const processorManufacturerStringIndex = bytes[7] - 1;
   const processorVersionStringIndex = bytes[16] - 1;
   const serialNumberStringIndex = bytes[32] - 1;
@@ -11,6 +13,9 @@ export function parseProcessorStructure(bytes: number[]) {
   return {
     type: "PROCESSOR" as const,
     socketDesignation: strings[socketDesignationStringIndex],
+    processorType: (
+      processorTypes as Record<string, string>
+    )[numericProcessorType.toString()] ?? "UNKNOWN",
     processorManufacturer: strings[processorManufacturerStringIndex],
     processorVersion: strings[processorVersionStringIndex],
     serialNumber: strings[serialNumberStringIndex],
