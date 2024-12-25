@@ -1,7 +1,7 @@
 import type { Structure } from "../../types/structure.ts";
 import { getStructureType } from "../get_structure_type.ts";
-import { parseBiosStructure } from "./ _bios.ts";
 import { parseBaseboardStructure } from "./_baseboard.ts";
+import { parseBiosStructure } from "./_bios.ts";
 import { parseChassisStructure } from "./_chassis.ts";
 import { parseMemoryDeviceStructure } from "./_memory_device.ts";
 import { parseProcessorStructure } from "./_processor.ts";

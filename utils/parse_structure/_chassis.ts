@@ -1,6 +1,7 @@
+import type { Structure } from "../../types/structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseChassisStructure(bytes: number[]) {
+export function parseChassisStructure(bytes: number[]): Structure {
   const manufacturerStringIndex = bytes[4] - 1;
   const versionStringIndex = bytes[6] - 1;
   const serialNumberStringIndex = bytes[7] - 1;

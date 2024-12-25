@@ -1,7 +1,7 @@
 import { structureTypes } from "../constants/structure_types.ts";
 import type { StructureType } from "../types/structure_type.ts";
 
-export function getStructureType(bytes: number[]) {
+export function getStructureType(bytes: number[]): StructureType {
   const numericType = bytes[0];
   return (
     (

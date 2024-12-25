@@ -1,6 +1,7 @@
+import type { Structure } from "../../types/structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseBiosStructure(bytes: number[]) {
+export function parseBiosStructure(bytes: number[]): Structure {
   const vendorStringIndex = bytes[4] - 1;
   const versionStringIndex = bytes[5] - 1;
   const releaseDateStringIndex = bytes[8] - 1;

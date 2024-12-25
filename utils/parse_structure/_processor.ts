@@ -1,8 +1,9 @@
 import { processorFamilies } from "../../constants/processor_families.ts";
 import { processorTypes } from "../../constants/processor_types.ts";
+import type { Structure } from "../../types/structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseProcessorStructure(bytes: number[]) {
+export function parseProcessorStructure(bytes: number[]): Structure {
   const socketDesignationStringIndex = bytes[4] - 1;
   const numericProcessorType = bytes[5];
   const numericProcessorFamily = bytes[6];
