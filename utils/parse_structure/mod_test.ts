@@ -16,4 +16,5 @@ Deno.test("parse structure", async () => {
   assertEquals(structures.filter((v) => v.type === "PROCESSOR").length, 1);
   assertEquals(structures.filter((v) => v.type === "MEMORY_DEVICE").length, 4);
   // TODO: Add better checks.
+  console.log(structures);
 });

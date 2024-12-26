@@ -1,0 +1,16 @@
+export const memoryErrorTypes = {
+  "1": "OTHER",
+  "2": "UNKNOWN",
+  "3": "OK",
+  "4": "BAD_READ",
+  "5": "PARITY_ERROR",
+  "6": "SINGLE_BIT_ERROR",
+  "7": "DOUBLE_BIT_ERROR",
+  "8": "MULTI_BIT_ERROR",
+  "9": "NIBBLE_ERROR",
+  "10": "CHECKSUM_ERROR",
+  "11": "CRC_ERROR",
+  "12": "CORRECTED_SINGLE_BIT_ERROR",
+  "13": "CORRECTED_ERROR",
+  "14": "UNCORRECTABLE_ERROR",
+} as const;

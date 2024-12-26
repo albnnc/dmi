@@ -1,5 +1,7 @@
 import type { Structure } from "../../types/structure.ts";
 import { getStructureType } from "../get_structure_type.ts";
+import { parse32BitMemoryErrorStructure } from "./_32_bit_memory_error.ts";
+import { parse64BitMemoryErrorStructure } from "./_64_bit_memory_error.ts";
 import { parseBaseboardStructure } from "./_baseboard.ts";
 import { parseBiosStructure } from "./_bios.ts";
 import { parseChassisStructure } from "./_chassis.ts";
@@ -17,6 +19,8 @@ const structureParsers: Record<
   "BASEBOARD": parseBaseboardStructure,
   "PROCESSOR": parseProcessorStructure,
   "MEMORY_DEVICE": parseMemoryDeviceStructure,
+  "32_BIT_MEMORY_ERROR": parse32BitMemoryErrorStructure,
+  "64_BIT_MEMORY_ERROR": parse64BitMemoryErrorStructure,
 };
 
 export function parseStructure(bytes: number[]): Structure {
