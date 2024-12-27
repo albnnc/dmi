@@ -3,4 +3,4 @@ export const memoryErrorGranularities = {
   "2": "UNKNOWN",
   "3": "DEVICE_LEVEL",
   "4": "MEMORY_PARTITION_LEVEL",
-};
+} as const;

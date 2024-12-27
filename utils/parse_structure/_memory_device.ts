@@ -1,23 +1,32 @@
-import type { Structure } from "../../types/structure.ts";
+import type { MemoryDeviceStructure } from "../../types/memory_device_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseMemoryDeviceStructure(bytes: number[]): Structure {
-  const formFactorStringIndex = bytes[14] - 1;
-  const deviceLocatorStringIndex = bytes[16] - 1;
-  const bankLocatorStringIndex = bytes[17] - 1;
-  const manufacturerStringIndex = bytes[23] - 1;
-  const serialNumberStringIndex = bytes[24] - 1;
-  const assetTagStringIndex = bytes[25] - 1;
-  const partNumberStringIndex = bytes[26] - 1;
+export function parseMemoryDeviceStructure(
+  bytes: number[],
+): MemoryDeviceStructure {
   const strings = getStructureStrings(bytes);
+  const handle = (() => {
+    const dataView = new DataView(new ArrayBuffer(2));
+    dataView.setUint8(0, bytes[2]);
+    dataView.setUint8(1, bytes[3]);
+    return dataView.getUint16(0, true);
+  })();
+  const formFactor = strings[bytes[14] - 1];
+  const deviceLocator = strings[bytes[16] - 1];
+  const bankLocator = strings[bytes[17] - 1];
+  const manufacturer = strings[bytes[23] - 1];
+  const serialNumber = strings[bytes[24] - 1];
+  const assetTag = strings[bytes[25] - 1];
+  const partNumber = strings[bytes[26] - 1];
   return {
     type: "MEMORY_DEVICE" as const,
-    formFactor: strings[formFactorStringIndex],
-    deviceLocator: strings[deviceLocatorStringIndex],
-    bankLocator: strings[bankLocatorStringIndex],
-    manufacturer: strings[manufacturerStringIndex],
-    serialNumber: strings[serialNumberStringIndex],
-    assetTag: strings[assetTagStringIndex],
-    partNumber: strings[partNumberStringIndex],
+    handle,
+    formFactor,
+    deviceLocator,
+    bankLocator,
+    manufacturer,
+    serialNumber,
+    assetTag,
+    partNumber,
   };
 }

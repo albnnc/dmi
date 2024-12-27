@@ -1,87 +1,85 @@
 import { memoryErrorGranularities } from "../../constants/memory_error_granularities.ts";
 import { memoryErrorOperations } from "../../constants/memory_error_operations.ts";
 import { memoryErrorTypes } from "../../constants/memory_error_types.ts";
-import type { Structure } from "../../types/structure.ts";
+import type { SixtyFourBitMemoryErrorStructure } from "../../types/64_bit_memory_error_structure.ts";
+import type { MemoryErrorGranularity } from "../../types/memory_error_granularity.ts";
+import type { MemoryErrorOperation } from "../../types/memory_error_operation.ts";
+import type { MemoryErrorType } from "../../types/memory_error_type.ts";
 
-export function parse64BitMemoryErrorStructure(bytes: number[]): Structure {
-  const numericErrorType = bytes[4];
-  const numericErrorGranularity = bytes[5];
-  const numericErrorOperation = bytes[6];
-  // 0x00000000 vendor syndrome is unknown.
-  const vendorSyndrome = parseInt(
-    [bytes[7], bytes[8], bytes[9], bytes[10]]
-      .reverse()
-      .map((i) => i.toString(16).padStart(2, "0"))
-      .join(""),
-    16,
-  ) || undefined;
-  const memoryArrayErrorAddress = parseInt(
-    [
-      bytes[11],
-      bytes[12],
-      bytes[13],
-      bytes[14],
-      bytes[15],
-      bytes[16],
-      bytes[17],
-      bytes[18],
-    ]
-      .reverse()
-      .map((i) => i.toString(16).padStart(2, "0"))
-      .join(""),
-    16,
-  );
-  const deviceErrorAddress = parseInt(
-    [
-      bytes[19],
-      bytes[20],
-      bytes[21],
-      bytes[22],
-      bytes[23],
-      bytes[24],
-      bytes[25],
-      bytes[26],
-    ]
-      .reverse()
-      .map((i) => i.toString(16).padStart(2, "0"))
-      .join(""),
-    16,
-  );
-  const errorResolution = parseInt(
-    [
-      bytes[27],
-      bytes[28],
-      bytes[29],
-      bytes[30],
-    ]
-      .reverse()
-      .map((i) => i.toString(16).padStart(2, "0"))
-      .join(""),
-    16,
-  );
+export function parse64BitMemoryErrorStructure(
+  bytes: number[],
+): SixtyFourBitMemoryErrorStructure {
+  const handle = (() => {
+    const dataView = new DataView(new ArrayBuffer(2));
+    dataView.setUint8(0, bytes[2]);
+    dataView.setUint8(1, bytes[3]);
+    return dataView.getUint16(0, true);
+  })();
+  const errorType = (
+    memoryErrorTypes as Record<string, string>
+  )[bytes[4]] as MemoryErrorType;
+  const errorGranularity = (
+    memoryErrorGranularities as Record<string, string>
+  )[bytes[5]] as MemoryErrorGranularity;
+  const errorOperation = (
+    memoryErrorOperations as Record<string, string>
+  )[bytes[6]] as MemoryErrorOperation;
+  const vendorSyndrome = (() => {
+    const dataView = new DataView(new ArrayBuffer(4));
+    dataView.setUint8(0, bytes[7]);
+    dataView.setUint8(1, bytes[8]);
+    dataView.setUint8(2, bytes[9]);
+    dataView.setUint8(3, bytes[10]);
+    // 0x00000000 means unknown value.
+    return dataView.getUint32(0, true) || undefined;
+  })();
+  const memoryArrayErrorAddress = (() => {
+    const dataView = new DataView(new ArrayBuffer(8));
+    dataView.setUint8(0, bytes[11]);
+    dataView.setUint8(1, bytes[12]);
+    dataView.setUint8(2, bytes[13]);
+    dataView.setUint8(3, bytes[14]);
+    dataView.setUint8(4, bytes[15]);
+    dataView.setUint8(5, bytes[16]);
+    dataView.setUint8(6, bytes[17]);
+    dataView.setUint8(7, bytes[18]);
+    const value = dataView.getBigUint64(0, true);
+    return value === unknownQwordAddress ? undefined : value;
+  })();
+  const deviceErrorAddress = (() => {
+    const dataView = new DataView(new ArrayBuffer(8));
+    dataView.setUint8(0, bytes[19]);
+    dataView.setUint8(1, bytes[20]);
+    dataView.setUint8(2, bytes[21]);
+    dataView.setUint8(3, bytes[22]);
+    dataView.setUint8(4, bytes[23]);
+    dataView.setUint8(5, bytes[24]);
+    dataView.setUint8(6, bytes[25]);
+    dataView.setUint8(7, bytes[26]);
+    const value = dataView.getBigUint64(0, true);
+    return value === unknownQwordAddress ? undefined : value;
+  })();
+  const errorResolution = (() => {
+    const dataView = new DataView(new ArrayBuffer(4));
+    dataView.setUint8(0, bytes[19]);
+    dataView.setUint8(1, bytes[20]);
+    dataView.setUint8(2, bytes[21]);
+    dataView.setUint8(3, bytes[22]);
+    const value = dataView.getUint32(0, true);
+    return BigInt(value) === unknownDwordAddress ? undefined : value;
+  })();
   return {
-    type: "32_BIT_MEMORY_ERROR" as const,
-    errorType: (memoryErrorTypes as Record<string, string>)[
-      numericErrorType.toString()
-    ] ?? "UNKNOWN",
-    errorGranularity: (memoryErrorGranularities as Record<string, string>)[
-      numericErrorGranularity.toString()
-    ] ?? "UNKNOWN",
-    errorOperation: (memoryErrorOperations as Record<string, string>)[
-      numericErrorOperation.toString()
-    ] ?? "UNKNOWN",
+    type: "64_BIT_MEMORY_ERROR" as const,
+    handle,
+    errorType,
+    errorGranularity,
+    errorOperation,
     vendorSyndrome,
-    memoryArrayErrorAddress: memoryArrayErrorAddress === unknownQwordAddress
-      ? undefined
-      : memoryArrayErrorAddress,
-    deviceErrorAddress: deviceErrorAddress === unknownQwordAddress
-      ? undefined
-      : deviceErrorAddress,
-    errorResolution: errorResolution === unknownDwordAddress
-      ? undefined
-      : errorResolution,
+    memoryArrayErrorAddress,
+    deviceErrorAddress,
+    errorResolution,
   };
 }
 
-const unknownDwordAddress = parseInt("8000000000000000", 16);
-const unknownQwordAddress = parseInt("80000000", 16);
+const unknownDwordAddress = BigInt("0x80000000");
+const unknownQwordAddress = BigInt("0x8000000000000000");

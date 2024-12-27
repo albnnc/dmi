@@ -1,17 +1,30 @@
-import type { Structure } from "../../types/structure.ts";
+import type { BiosStructure } from "../../types/bios_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseBiosStructure(bytes: number[]): Structure {
-  const vendorStringIndex = bytes[4] - 1;
-  const versionStringIndex = bytes[5] - 1;
-  const releaseDateStringIndex = bytes[8] - 1;
+export function parseBiosStructure(bytes: number[]): BiosStructure {
   const strings = getStructureStrings(bytes);
+  const handle = (() => {
+    const dataView = new DataView(new ArrayBuffer(2));
+    dataView.setUint8(0, bytes[2]);
+    dataView.setUint8(1, bytes[3]);
+    return dataView.getUint16(0, true);
+  })();
+  const vendor = strings[bytes[4] - 1];
+  const version = strings[bytes[5] - 1];
+  const biosStartingAddressSegment = (() => {
+    const dataView = new DataView(new ArrayBuffer(2));
+    dataView.setUint8(0, bytes[6]);
+    dataView.setUint8(1, bytes[7]);
+    // 0x0000 means unknown value.
+    return dataView.getUint16(0, true) || undefined;
+  })();
+  const releaseDate = strings[bytes[8] - 1];
   return {
     type: "BIOS" as const,
-    vendor: strings[vendorStringIndex],
-    version: strings[versionStringIndex],
-    releaseDate: strings[releaseDateStringIndex]
-      ? new Date(strings[releaseDateStringIndex]).toISOString()
-      : undefined,
+    handle,
+    vendor,
+    version,
+    biosStartingAddressSegment,
+    releaseDate,
   };
 }
