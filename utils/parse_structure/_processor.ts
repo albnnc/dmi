@@ -1,6 +1,7 @@
 import { processorFamilies } from "../../constants/processor_families.ts";
 import { processorTypes } from "../../constants/processor_types.ts";
 import type { ProcessorStructure } from "../../types/processor_structure.ts";
+import type { ProcessorType } from "../../types/processor_type.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
 export function parseProcessorStructure(bytes: number[]): ProcessorStructure {
@@ -14,7 +15,7 @@ export function parseProcessorStructure(bytes: number[]): ProcessorStructure {
   const socketDesignation = strings[bytes[4] - 1];
   const processorType = (
     processorTypes as Record<string, string>
-  )[bytes[5]];
+  )[bytes[5]] as ProcessorType;
   const processorFamily = (
     processorFamilies as Record<string, string>
   )[bytes[6]];

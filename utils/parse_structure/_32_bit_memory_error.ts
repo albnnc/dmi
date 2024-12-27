@@ -2,6 +2,9 @@ import { memoryErrorGranularities } from "../../constants/memory_error_granulari
 import { memoryErrorOperations } from "../../constants/memory_error_operations.ts";
 import { memoryErrorTypes } from "../../constants/memory_error_types.ts";
 import type { ThirtyTwoBitMemoryErrorStructure } from "../../types/32_bit_memory_error_structure.ts";
+import type { MemoryErrorGranularity } from "../../types/memory_error_granularity.ts";
+import type { MemoryErrorOperation } from "../../types/memory_error_operation.ts";
+import type { MemoryErrorType } from "../../types/memory_error_type.ts";
 
 export function parse32BitMemoryErrorStructure(
   bytes: number[],
@@ -14,13 +17,13 @@ export function parse32BitMemoryErrorStructure(
   })();
   const errorType = (
     memoryErrorTypes as Record<string, string>
-  )[bytes[4]];
+  )[bytes[4]] as MemoryErrorType;
   const errorGranularity = (
     memoryErrorGranularities as Record<string, string>
-  )[bytes[5]];
+  )[bytes[5]] as MemoryErrorGranularity;
   const errorOperation = (
     memoryErrorOperations as Record<string, string>
-  )[bytes[6]];
+  )[bytes[6]] as MemoryErrorOperation;
   const vendorSyndrome = (() => {
     const dataView = new DataView(new ArrayBuffer(4));
     dataView.setUint8(0, bytes[7]);

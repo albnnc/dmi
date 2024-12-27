@@ -5,4 +5,4 @@ export const processorTypes = {
   "4": "MATH_PROCESSOR",
   "5": "DSP_PROCESSOR",
   "6": "VIDEO_PROCESSOR",
-};
+} as const;
