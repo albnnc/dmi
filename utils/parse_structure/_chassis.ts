@@ -1,7 +1,7 @@
-import type { Structure } from "../../types/structure.ts";
+import type { ChassisStructure } from "../../types/chassis_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseChassisStructure(bytes: number[]): Structure {
+export function parseChassisStructure(bytes: number[]): ChassisStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));

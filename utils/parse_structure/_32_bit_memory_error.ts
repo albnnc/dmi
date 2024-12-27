@@ -1,9 +1,11 @@
 import { memoryErrorGranularities } from "../../constants/memory_error_granularities.ts";
 import { memoryErrorOperations } from "../../constants/memory_error_operations.ts";
 import { memoryErrorTypes } from "../../constants/memory_error_types.ts";
-import type { Structure } from "../../types/structure.ts";
+import type { ThirtyTwoBitMemoryErrorStructure } from "../../types/32_bit_memory_error_structure.ts";
 
-export function parse32BitMemoryErrorStructure(bytes: number[]): Structure {
+export function parse32BitMemoryErrorStructure(
+  bytes: number[],
+): ThirtyTwoBitMemoryErrorStructure {
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
     dataView.setUint8(0, bytes[2]);
@@ -25,7 +27,7 @@ export function parse32BitMemoryErrorStructure(bytes: number[]): Structure {
     dataView.setUint8(1, bytes[8]);
     dataView.setUint8(2, bytes[9]);
     dataView.setUint8(3, bytes[10]);
-    // 0x00000000 vendor syndrome is unknown.
+    // 0x00000000 means unknown value.
     return dataView.getUint32(0, true) || undefined;
   })();
   const memoryArrayErrorAddress = (() => {

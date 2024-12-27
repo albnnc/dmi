@@ -1,7 +1,9 @@
-import type { Structure } from "../../types/structure.ts";
+import type { MemoryDeviceStructure } from "../../types/memory_device_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseMemoryDeviceStructure(bytes: number[]): Structure {
+export function parseMemoryDeviceStructure(
+  bytes: number[],
+): MemoryDeviceStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));

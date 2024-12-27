@@ -1,7 +1,7 @@
-import type { Structure } from "../../types/structure.ts";
+import type { SystemStructure } from "../../types/system_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseSystemStructure(bytes: number[]): Structure {
+export function parseSystemStructure(bytes: number[]): SystemStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));

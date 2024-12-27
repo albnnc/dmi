@@ -1,9 +1,9 @@
 import { processorFamilies } from "../../constants/processor_families.ts";
 import { processorTypes } from "../../constants/processor_types.ts";
-import type { Structure } from "../../types/structure.ts";
+import type { ProcessorStructure } from "../../types/processor_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseProcessorStructure(bytes: number[]): Structure {
+export function parseProcessorStructure(bytes: number[]): ProcessorStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));

@@ -1,7 +1,7 @@
-import type { Structure } from "../../types/structure.ts";
+import type { BaseboardStructure } from "../../types/baseboard_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseBaseboardStructure(bytes: number[]): Structure {
+export function parseBaseboardStructure(bytes: number[]): BaseboardStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));

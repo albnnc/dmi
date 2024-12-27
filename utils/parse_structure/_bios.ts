@@ -1,7 +1,7 @@
-import type { Structure } from "../../types/structure.ts";
+import type { BiosStructure } from "../../types/bios_structure.ts";
 import { getStructureStrings } from "../get_structure_strings.ts";
 
-export function parseBiosStructure(bytes: number[]): Structure {
+export function parseBiosStructure(bytes: number[]): BiosStructure {
   const strings = getStructureStrings(bytes);
   const handle = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
