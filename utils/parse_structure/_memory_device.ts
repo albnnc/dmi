@@ -27,11 +27,7 @@ export function parseMemoryDeviceStructure(
     ) {
       return undefined;
     }
-    return value * (
-      value.toString(16).padStart(8, "0").startsWith("0")
-        ? 1_000_000
-        : 1_000_000_000
-    );
+    return value;
   })();
   const formFactor = (
     memoryFormFactors as Record<string, string>
@@ -68,7 +64,7 @@ export function parseMemoryDeviceStructure(
     if (value === 0) {
       return undefined;
     }
-    return value * 1_000_000;
+    return value;
   })();
   const configuredMemorySpeed = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
@@ -88,21 +84,21 @@ export function parseMemoryDeviceStructure(
     dataView.setUint8(0, bytes[34]);
     dataView.setUint8(1, bytes[35]);
     const value = dataView.getUint16(0, true);
-    return value / 1_000 || undefined;
+    return value || undefined;
   })();
   const maximumVoltage = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
     dataView.setUint8(0, bytes[36]);
     dataView.setUint8(1, bytes[37]);
     const value = dataView.getUint16(0, true);
-    return value / 1_000 || undefined;
+    return value || undefined;
   })();
   const configuredVoltage = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
     dataView.setUint8(0, bytes[38]);
     dataView.setUint8(1, bytes[39]);
     const value = dataView.getUint16(0, true);
-    return value / 1_000 || undefined;
+    return value || undefined;
   })();
   return {
     type: "MEMORY_DEVICE" as const,
