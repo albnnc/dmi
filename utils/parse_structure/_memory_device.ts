@@ -88,21 +88,21 @@ export function parseMemoryDeviceStructure(
     dataView.setUint8(0, bytes[34]);
     dataView.setUint8(1, bytes[35]);
     const value = dataView.getUint16(0, true);
-    return value * 1_000 || undefined;
+    return value / 1_000 || undefined;
   })();
   const maximumVoltage = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
     dataView.setUint8(0, bytes[36]);
     dataView.setUint8(1, bytes[37]);
     const value = dataView.getUint16(0, true);
-    return value * 1_000 || undefined;
+    return value / 1_000 || undefined;
   })();
   const configuredVoltage = (() => {
     const dataView = new DataView(new ArrayBuffer(2));
     dataView.setUint8(0, bytes[38]);
     dataView.setUint8(1, bytes[39]);
     const value = dataView.getUint16(0, true);
-    return value * 1_000 || undefined;
+    return value / 1_000 || undefined;
   })();
   return {
     type: "MEMORY_DEVICE" as const,
