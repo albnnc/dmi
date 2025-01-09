@@ -1,6 +1,8 @@
 export * from "./constants/memory_error_granularities.ts";
 export * from "./constants/memory_error_operations.ts";
 export * from "./constants/memory_error_types.ts";
+export * from "./constants/memory_form_factors.ts";
+export * from "./constants/memory_types.ts";
 export * from "./constants/processor_families.ts";
 export * from "./constants/processor_types.ts";
 export * from "./constants/structure_types.ts";
@@ -14,6 +16,8 @@ export * from "./types/memory_device_structure.ts";
 export * from "./types/memory_error_granularity.ts";
 export * from "./types/memory_error_operation.ts";
 export * from "./types/memory_error_type.ts";
+export * from "./types/memory_form_factor.ts";
+export * from "./types/memory_type.ts";
 export * from "./types/processor_structure.ts";
 export * from "./types/structure.ts";
 export * from "./types/structure_type.ts";
