@@ -1,6 +1,6 @@
 {
   "name": "@albnnc/dmi",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "tasks": {
     "fmt": "dprint fmt",
     "fmt:check": "dprint check",
