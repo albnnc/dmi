@@ -8,7 +8,13 @@ export interface ProcessorStructure extends GenericStructure {
   processorFamily?: string;
   processorManufacturer?: string;
   processorVersion?: string;
+  externalClock?: number;
+  maxSpeed?: number;
+  currentSpeed?: number;
   serialNumber?: string;
   assetTag?: string;
   partNumber?: string;
+  coreCount?: number;
+  coreEnabled?: number;
+  threadCount?: number;
 }
